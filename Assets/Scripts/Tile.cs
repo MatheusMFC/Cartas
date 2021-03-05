@@ -24,10 +24,11 @@ public class Tile : MonoBehaviour
     public void OnMouseDown()
     {
         print("Você pressinonou num Tile");
-        if (tileRevelada)
+        /*if (tileRevelada)
             EscondeCarta();
         else
-            RevelaCarta();
+            RevelaCarta();*/        //aqui não se guardava número de cartas
+        GameObject.Find("gameManager").GetComponent<ManageCartas>().CartaSelecionada(gameObject);
     }
 
     public void EscondeCarta()
