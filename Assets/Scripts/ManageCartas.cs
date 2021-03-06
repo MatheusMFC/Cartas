@@ -24,7 +24,7 @@ public class ManageCartas : MonoBehaviour
     int recorde = 10000;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         MostraCartas();
         UpdateTentativas();
@@ -52,16 +52,19 @@ public class ManageCartas : MonoBehaviour
                     Destroy(carta2);
                     numAcertos++;
                     somOK.Play();
-                    if (numAcertos == 13)
+                    if (numAcertos == 26)
                     {
-                        if (numTentativas < recorde)
+                        if (numTentativas < recorde || recorde == 0)
                         {
                             recorde = numTentativas;
                             PlayerPrefs.SetInt("recorde", recorde);
+                            SceneManager.LoadScene("Recorde");
                         }
-                        PlayerPrefs.SetInt("Jogadas", numTentativas);
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                        primeiroJogo = false;
+                        else
+                        {
+                            PlayerPrefs.SetInt("Jogadas", numTentativas);
+                            SceneManager.LoadScene("EndGame");
+                        }
                     }
                 }
                 else
@@ -84,6 +87,8 @@ public class ManageCartas : MonoBehaviour
     {
         int[] arrayEmbaralhada = CriaArrayEmbaralhado();
         int[] arrayEmbaralhada2 = CriaArrayEmbaralhado();
+        int[] arrayEmbaralhada3 = CriaArrayEmbaralhado();
+        int[] arrayEmbaralhada4 = CriaArrayEmbaralhado();
         //Instantiate(carta, new Vector3(0, 0, 0), Quaternion.identity);
         //AddUmaCarta();
         for (int i = 0; i < 13; i++)
@@ -92,6 +97,8 @@ public class ManageCartas : MonoBehaviour
             //AddUmaCarta(i, arrayEmbaralhada[i]);
             AddUmaCarta(0, i, arrayEmbaralhada[i]);
             AddUmaCarta(1, i, arrayEmbaralhada2[i]);
+            AddUmaCarta(2, i, arrayEmbaralhada3[i]);
+            AddUmaCarta(3, i, arrayEmbaralhada4[i]);
         }
     }
 
@@ -103,7 +110,7 @@ public class ManageCartas : MonoBehaviour
         float fatorEscalaY = (945 * escalaCartaOriginal) / 110.0f;
         //Vector3 novaPosicao = new Vector3(centro.transform.position.x + ((rank - 13 / 2) * 1.3f), centro.transform.position.y, centro.transform.position.z);
         //Vector3 novaPosicao = new Vector3(centro.transform.position.x + ((rank - 13 / 2) * fatorEscalaX), centro.transform.position.y, centro.transform.position.z);
-        Vector3 novaPosicao = new Vector3(centro.transform.position.x + ((rank - 13 / 2) * fatorEscalaX), centro.transform.position.y + ((linha - 2 / 2) * fatorEscalaY), centro.transform.position.z);
+        Vector3 novaPosicao = new Vector3(centro.transform.position.x + ((rank - 13 / 2) * fatorEscalaX), centro.transform.position.y + ((linha - 4 / 2) * fatorEscalaY), centro.transform.position.z);
         //GameObject c = (GameObject)(Instantiate(carta, new Vector3(0, 0, 0), Quaternion.identity));
         //GameObject c = (GameObject)(Instantiate(carta, new Vector3(rank*2.0f, 0, 0), Quaternion.identity));
         GameObject c = (GameObject)(Instantiate(carta, novaPosicao, Quaternion.identity));
@@ -148,10 +155,21 @@ public class ManageCartas : MonoBehaviour
                 numeroCarta = "" + (valor + 1);
                 break;
         }
-        if (linha == 0)
-            nomeDaCarta = numeroCarta + "_of_diamonds";
-        else
-            nomeDaCarta = numeroCarta + "_of_hearts";
+        switch (linha)
+        {
+            case 0:
+                nomeDaCarta = numeroCarta + "_of_diamonds";
+                break;
+            case 1:
+                nomeDaCarta = numeroCarta + "_of_clubs";
+                break;
+            case 2:
+                nomeDaCarta = numeroCarta + "_of_hearts";
+                break;
+            case 3:
+                nomeDaCarta = numeroCarta + "_of_spades";
+                break;
+        }        
         Sprite s1 = (Sprite)Resources.Load<Sprite>(nomeDaCarta);
         print("S1: " + s1);
         //GameObject.Find("" + rank).GetComponent<Tile>().SetCartaOriginal(s1);

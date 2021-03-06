@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ManageButton.cs" />
     <Compile Include="Assets\Scripts\ManageCartas.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Reference Include="UnityEngine">
